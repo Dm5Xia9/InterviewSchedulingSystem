@@ -1,0 +1,44 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CalendarsViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+<div class="head-calendars">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light"
+       asp-action="Index" asp-controller="Template">Шаблоны</a>
+    &nbsp
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light"
+       asp-action="Create" asp-controller="Calendars">Создать</a>
+</div>
+<div class="list-calendars">
+    @if (Model.Calendars.Count() == 0)
+    {
+        <div>тут пусто</div>
+    }
+    else
+    {
+        @foreach (var calendar in Model.Calendars)
+        {
+            @await Html.PartialAsync("Partials/_IndexPartial.cshtml", calendar);
+        }
+    }
+</div>
+@section Styles{
+    <link href="~/admin/css/Calendars.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script>
+        $(".del-c").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Delete", "Calendars")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                    });
+        });
+    </script>
+}

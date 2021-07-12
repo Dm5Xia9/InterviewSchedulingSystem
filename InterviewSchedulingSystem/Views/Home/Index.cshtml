@@ -1,0 +1,51 @@
+﻿@model InterviewSchedulingSystem.ViewModels.CandidateViewModels.AuthenticateViewModel
+
+@{
+    ViewData["Title"] = "Главная";
+
+#if DEBUG
+    Model.Telephone = "8005553535";
+    Model.FullName = "sdfrsd";
+#endif
+}
+
+
+
+
+@if (Model.Vacancies.Count() == 0)
+{
+    <div class="head">
+        <h1 class="text-inverse text-center p-100">Компания "66 бит" приветствует вас!</h1>
+        <h2 class="text-inverse text-center">На данный момент у нас нет доступных вакансий</h2>
+    </div>
+}
+else
+{
+    <div class="head">
+        <h1 class="text-inverse text-center p-100">Компания "66 бит" приветствует вас!</h1>
+        <h2 class="text-inverse text-center">Пожалуйста, представьтесь</h2>
+    </div>
+    <form class="form-material m-t-40 w-400 block-center" method="post" asp-controller="CandidateLoginRegister" asp-action="CandatateAuthenticate">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group">
+            <input class="form-control form-control-line" placeholder="Фамилия Имя Отчество" asp-for="FullName">
+        </div>
+        <div class="form-group row">
+            <div class="col-10">
+                <input type="text" class="form-control phone-inputmask" id="phone-mask" placeholder="Номер телефона" asp-for="Telephone">
+            </div>
+        </div>
+        <div class="form-group">
+            <select class="form-control" asp-for="VacancyId" asp-items="Model.Vacancies">
+            </select>
+        </div>
+        <p><button type="submit" class="btn-new btn-success waves-effect waves-light m-r-10 f-s-20 center-button">Отправить</button></p>
+    </form>
+}
+@section Styles {
+    <link href="~/lib/horizontal-timeline/css/horizontal-timeline.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/js/mask.init.js"></script>
+    <script src="~/lib/horizontal-timeline/js/horizontal-timeline.js"></script>
+}

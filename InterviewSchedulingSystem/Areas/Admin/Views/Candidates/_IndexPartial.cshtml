@@ -1,0 +1,62 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CandidatesViewModels.CandidateExt
+@using InterviewSchedulingSystem.Extensions
+<div>
+    <div class="global-vacancy-block">
+        <div class="left-div-start-block" style="width: 250px;padding-top: 5px;">
+            <div class="name-vacancy">@Model.Candidate.FullName</div>
+        </div>
+        <div class="left-div-start-block">
+            <div class="telephone-vacancy">@Model.Candidate.Vacancy.Name</div>
+        </div>
+        @if (Model.Recording == null)
+        {
+            <div class="left-div-start-block" style="width: 100px;">
+                <div class="telephone-vacancy">Не записан</div>
+            </div>
+        }
+        else
+        {
+            if (Model.Recording.IsApproved && !Model.Recording.IsDeleted)
+            {
+                <div class="left-div-start-block" style="width: 100px;">
+                    <div class="telephone-vacancy">Запись подтверждена</div>
+                </div>
+            }
+            else if (Model.Recording.IsLocked && !Model.Recording.IsDeleted)
+            {
+                <div class="left-div-start-block" style="width: 100px;">
+                    <div class="telephone-vacancy">Запись заблокированна</div>
+                </div>
+            }
+            else if (!Model.Recording.IsDeleted)
+            {
+                <div class="left-div-start-block" style="width: 100px;">
+                    <div class="telephone-vacancy">Запись без ответа</div>
+                </div>
+            }
+        }
+        <div class="left-div-start-block">
+            <div class="telephone-vacancy">@Model.Candidate.Telephone</div>
+        </div>
+        @if (Model.Candidate.AutoLink != null)
+        {
+            @if (Model.Candidate.AutoLink.IsConfirmed)
+            {
+                <div class="left-div-start-block" style="width: 230px;">
+                    <div class="telephone-vacancy">Ссылка подтверждена</div>
+                </div>
+            }
+            else
+            {
+                <div class="left-div-start-block" style="width: 230px;">
+                    <div class="telephone-vacancy">Ссылка не подтверждена</div>
+                </div>
+            }
+            <div class="left-div-start-block click-autoLink" style="width: 392px;">
+                <div class="telephone-vacancy autoLink">@Model.Candidate.AutoLink.ToPathString()</div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="selector-calendar"></div>

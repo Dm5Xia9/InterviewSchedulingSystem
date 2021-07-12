@@ -1,0 +1,14 @@
+﻿@model DateTime
+@using InterviewSchedulingSystem.Extensions
+
+@if (Model.CompareTo(DateTime.Now) >= 0)
+{
+<div class="calendar-block unselectable">
+    <div class="day-week-text">@Model.GetDayNameOfWeek()</div>
+    <div class="number-day-week-text">@($"{Model.Date.Day} {Model.Date.GetMonthName()}")</div>
+    <div class="free-time-block" data-date="@Model.Date.ToString("yyyy-MM-dd")"
+         data-full-date="@Model.Date.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+    </div>
+</div>
+}
+

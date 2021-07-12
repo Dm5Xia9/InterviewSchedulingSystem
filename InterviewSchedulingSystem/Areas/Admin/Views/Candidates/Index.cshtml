@@ -1,0 +1,58 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CandidatesViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+<div class="head-calendars">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light" asp-action="Create"
+       asp-controller="Candidates">Создать</a>
+</div>
+
+<div class="list-vacandies">
+    @if (Model.Candidates.Count() == 0)
+    {
+        <div>Тут пусто</div>
+    }
+    else
+    {
+        @foreach (var candidates in Model.Candidates)
+        {
+            @await Html.PartialAsync("_IndexPartial.cshtml", candidates);
+        }
+    }
+</div>
+@section Styles{
+    <link href="~/admin/css/Recordings.css" rel="stylesheet" />
+}
+
+@section Scripts{ 
+    <script>
+        jQuery.fn.selectText = function () {
+
+            this.find('input').each(function () {
+                if ($(this).prev().length == 0 || !$(this).prev().hasClass('p_copy')) {
+                    $('<p class="p_copy" style="position: absolute; z-index: -1;"></p>').insertBefore($(this));
+                }
+                $(this).prev().html($(this).val());
+            });
+
+            var doc = document;
+            var element = this[0];
+            console.log(this, element);
+            if (doc.body.createTextRange) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(element);
+                range.select();
+            } else if (window.getSelection) {
+                var selection = window.getSelection();
+                var range = document.createRange();
+                range.selectNodeContents(element);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        };
+
+        $(".click-autoLink").click(function () {
+            $(this).children(".autoLink").selectText();
+        });
+    </script>
+}

@@ -1,0 +1,22 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.VacanciesViewModels.CreateVacancyViewModel
+    <div class="head-calendars" style="display:flex; justify-content: flex-end;">
+        <a class="create-butt-a btn-success btn-calendar waves-effect waves-light"
+           style="padding:5px;" asp-action="Index" asp-controller="Vacancies">Назад</a>
+    </div>
+<form class="form-material w-400 block-center" method="post" asp-controller="Vacancies" asp-action="Create">
+    <div asp-validation-summary="ModelOnly"></div>
+    <label class="label-create-v">Создание вакансии</label>
+    @await Html.PartialAsync("_VacancyFormPartial.cshtml", Model)
+
+    <p>
+        <center><button type="submit" class="detail-a btn-success btn-calendar waves-effect waves-light">Создать</button></center>
+    </p>
+</form>
+@section Styles{
+    <link href="~/admin/css/VacancyCreate.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/js/mask.init.js"></script>
+    <script src="~/lib/horizontal-timeline/js/horizontal-timeline.js"></script>
+}
+

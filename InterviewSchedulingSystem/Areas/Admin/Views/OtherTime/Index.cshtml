@@ -1,0 +1,52 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.OtherTimeViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+<div class="list-vacandies">
+    @if (Model.Recordings.Count() == 0)
+    {
+        <div>Тут пусто</div>
+    }
+    else
+    {
+        @foreach (var recordings in Model.Recordings)
+        {
+            @await Html.PartialAsync("_IndexOtherTimePartial.cshtml", recordings);
+        }
+    }
+</div>
+@section Styles{
+    <link href="~/admin/css/Recordings.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script>
+        $(".appr-recording").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Accept", "OtherTime")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+            });
+        });
+    </script>
+    <script>
+        $(".lock-recording").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Locked", "OtherTime")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,269 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CalendarsViewModels.UpdateViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+@using InterviewSchedulingSystem.Helpers
+@using InterviewSchedulingSystem.Extensions
+<form method="post" class="floating-labels" asp-controller="Calendars" asp-action="Create">
+    <div class="head-form">
+        <div class="form-group" style="background: #eef5f9;">
+            <input type="text" class="form-control" style="background: #eef5f9;" id="name" 
+                   value="@Model.Name" autocomplete="off">
+            <span class="bar"></span>
+            <label for="input1">Название</label>
+        </div>
+        <select class="select2 m-b-10 select2-multiple" style="width: 50%;" asp-for="VacanciesId" 
+                asp-items="Model.VacanciesSelectList" multiple="multiple" data-placeholder="Вакансии">
+        </select>
+        <div style="display:flex">
+            <a asp-controller="Calendars" asp-action="Index">
+                <div class="save-active-calendar-block btn-success btn-calendar waves-effect waves-light">
+                    Назад
+                </div>
+            </a>
+            &nbsp
+            <div class="save-active-calendar-block btn-success btn-calendar waves-effect waves-light">
+                Изменить
+            </div>
+        </div>
+    </div>
+    @*<form method="post" asp-controller="Calendars" asp-action="Create">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div>
+                <label asp-for="Name"></label><br />
+                <input asp-for="Name" />
+            </div>
+            <div>
+                <input type="submit" value="Создать" />
+            </div>
+        </form>*@
+    <div class="block-times">
+        <div class="block-time whole-type">
+            @foreach (var datetime in DateTimeHelper.GetListWholeDateTime())
+            {
+                <div class="time-div-block">
+                    <div class="time-div btn-primary btn-calendar waves-effect waves-light btn-block-calendar"
+                         data-dateTime="@datetime.ToLongTimeString()">
+                        @datetime.GetHourMinute()
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="block-time half-type">
+            @foreach (var datetime in DateTimeHelper.GetListHalfDateTime())
+            {
+                <div class="time-div-block">
+                    <div class="time-div btn-primary btn-calendar waves-effect waves-light btn-block-calendar"
+                         data-dateTime="@datetime.ToLongTimeString()">
+                        @datetime.GetHourMinute()
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="block-time fourth-type">
+            @foreach (var datetime in DateTimeHelper.GetListFourthDateTime())
+            {
+                <div class="time-div-block">
+                    <div class="time-div btn-primary btn-calendar waves-effect waves-light btn-block-calendar"
+                         data-dateTime="@datetime.ToLongTimeString()">
+                        @datetime.GetHourMinute()
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <div id="carouselExampleControls" class="carousel slide" data-interval="false">
+        <div class="carousel-inner" role="listbox">
+            @foreach (var week in Model.Days)
+            {
+                @if (week == Model.Days[0])
+                {
+                    if (DateTimeHelper.NowOutput())
+                    {
+                        continue;
+                    }
+                    <div class="carousel-item active">
+                        <div class="container">
+                            <div class="calendars-block">
+                                @foreach (var day in week)
+                                {
+                                    @await Html.PartialAsync("Partials/_UpdatePartial.cshtml", day);
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item @(DateTimeHelper.CalendarClassNowOutput(Model.Days.IndexOf(week)))">
+                        <div class="container">
+                            <div class="calendars-block">
+                                @foreach (var day in week)
+                                {
+                                    @await Html.PartialAsync("Partials/_UpdatePartial.cshtml", day);
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        </div>
+        <a class="carousel-control-prev l--55" href="#carouselExampleControls" role="button" data-slide="prev" style="width: 140px;">
+            <span class="carousel-control-prev-icon carousel-control-prev-icon-black" aria-hidden="true"></span> 
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next r--55" href="#carouselExampleControls" role="button" data-slide="next" style="width: 140px;">
+            <span class="carousel-control-next-icon carousel-control-next-icon-black" aria-hidden="true"></span> 
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="Settings">
+        <div class="clear-active-calendar-block btn-primary btn-calendar waves-effect waves-light">
+            Снять выделение
+        </div>
+        &nbsp
+
+    </div>
+    <div style="display:none;" class="tex">
+        <div class="div-btn-calendar ">
+            <button type="button" data-dateTime="2002" class="btn-calendar waves-effect waves-light but-time-calendar
+                                                btn-block-calendar btn-primary center-button" style="z-index:999;">
+                20:00
+            </button>
+        </div>
+    </div>
+</form>
+@*<div class="conf" style="display:none;">
+        <div class="current-time">
+            <div class="current-time-year">
+                2021
+            </div>
+            1.06.2021
+        </div>
+    </div>*@
+@section Styles{
+    <link href="~/admin/css/CalendarCreate.css" rel="stylesheet" />
+    <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
+}
+@section Scripts{
+
+    <script>
+            $(".save-active-calendar-block").click(function () {
+                if ($("#name").val() == "") {
+                    return;
+                }
+                if ($(".data-active").length == 0) {
+                    return;
+                }
+                let json = {
+                    Name: $("#name").val(),
+                    DaysScheduleDict: {},
+                    Vacancies: $(".select2").val(),
+                };
+                $(".data-active").each(function () {
+                    var data_date = $(this).attr("data-date")
+                    l = [];
+                    $(this).find(".div-btn-calendar").each(function () {
+                        var CurrTime = data_date + "T" + $(this).find(".but-time-calendar").attr("data-dateTime");
+                        l.push(CurrTime);
+                    });
+                    json.DaysScheduleDict[$(this).attr("data-full-date")] = l;
+                });
+                console.log(json);
+                $.ajax({
+                    url: "@Url.Action("Update", "Calendars")",
+                    type: 'POST',
+                    data: { jsonG: JSON.stringify(json), id: @(Model.Id)},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                    });
+            });
+    </script>
+    <script>
+        var temp_calendar = $(".tex").children(".div-btn-calendar").clone();
+        $(".tex").children(".div-btn-calendar").remove();
+        $(".time-div").click(function () {
+            var th = $(this);
+            $(".calendar-block-active").each(function () {
+                var h = false;
+                $(this).find(".free-time-block").children().each(function () {
+                    if ($(this).find(".but-time-calendar").text() == th.text()) {
+                        h = true;
+                        return;
+                    }
+                });
+                if (h) {
+                    return;
+                }
+
+                var clone_temp_calendar = temp_calendar.clone();
+                var but_time_calendar = clone_temp_calendar.find(".but-time-calendar");
+                but_time_calendar.text(th.text());
+                but_time_calendar.attr("data-dateTime", th.attr("data-dateTime"));
+
+                $(this).find(".free-time-block").append(clone_temp_calendar);
+                clone_temp_calendar.parent(".free-time-block").addClass("data-active");
+                $(this).find(".free-time-block").scrollTop(
+                    $(this).find(".free-time-block").prop('scrollHeight'));
+                clone_temp_calendar.click(function () {
+                    $(".calendar-block-active").removeClass("calendar-block-active");
+                    if ($(this).parent(".free-time-block").children().length == 1) {
+                        $(this).parent(".free-time-block").removeClass("data-active");
+                    }
+                    $(this).remove();
+
+                });
+            });
+        });
+    </script>
+    <script>
+        $(".div-btn-calendar").click(function () {
+            $(".calendar-block-active").removeClass("calendar-block-active");
+            if ($(this).parent(".free-time-block").children().length == 1) {
+                $(this).parent(".free-time-block").removeClass("data-active");
+            }
+            $(this).remove();
+
+        });
+    </script>
+    <script>
+        $(".calendar-block").click(function () {
+            $(this).toggleClass("calendar-block-active");
+        });
+    </script>
+    <script>
+        $(".clear-active-calendar-block").click(function () {
+            $(".calendar-block-active").removeClass("calendar-block-active");
+        });
+    </script>
+    @*<script>
+            var temp_time_sch = $(".div-btn-calendar").clone();
+            $(".div-btn-calendar").detach();
+            var temp_sch = $(".calendar-block").clone();
+            $(".calendar-block").detach();
+            for (var i = 0; i < 5; i++) {
+                var clone_el = temp_sch.clone();
+                clone_el.find(".day-week-text").text("Название дня недели");
+                clone_el.find(".number-day-week-text").text("дата");
+                for (var j = 0; j < 5; j++) {
+                    var clone_time = temp_time_sch.clone();
+                    clone_el.find(".free-time-block").append(clone_time);
+                }
+                $(".calendars-block").append(clone_el);
+            }
+        </script>*@
+    <script src="~/lib/select2/dist/js/select2.full.min.js" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $(".select2").select2();
+        });
+    </script>
+}
+

@@ -1,0 +1,53 @@
+﻿@model ISSystem.Models.Recording
+@using InterviewSchedulingSystem.Extensions
+<div class="global-vacancy-block">
+    <div class="left-div-start-block">
+        <div class="name-vacancy">@Model.Candidate.FullName</div>
+    </div>
+    <div class="left-div-start-block">
+        <div class="telephone-vacancy">@Model.Vacancy.Name</div>
+    </div>
+    <div class="left-div-start-block" style="width: 100px;">
+        <div class="telephone-vacancy">@Model.DateTime.GetDayNameOfWeek()</div>
+    </div>
+    <div class="left-div-start-block">
+        <div class="telephone-vacancy">
+            @($"{Model.DateTime.Day} {Model.DateTime.GetMonthName()} " +
+                $"в {Model.DateTime.GetHourMinute()}")
+        </div>
+    </div>
+    <div class="left-div-start-block">
+        <div class="telephone-vacancy">@Model.Candidate.Telephone</div>
+    </div>
+    <div class="flex-block">
+        &nbsp
+        @if (!Model.IsDeleted)
+        {
+            @if (Model.IsLocked)
+            {
+                <a class="detail-a cancellation-r btn-success btn-calendar waves-effect waves-light"
+                   data-id="@Model.Id"
+                   data-is-locked="@Model.IsLocked" data-is-approved="@Model.IsApproved">Отмена</a>
+            }
+            else if (Model.IsApproved)
+            {
+
+                <a class="detail-a btn-success btn-calendar waves-effect waves-light m-r-15"
+                   data-id="@Model.Id" style="background: #7ca766 !important;border: #7ca766 !important;"
+                   asp-action="Proceed" asp-controller="Recordings" asp-route-id="@Model.Id">Продолжить собеседование</a>
+
+                <a class="detail-a cancellation-r btn-success btn-calendar waves-effect waves-light"
+                   data-id="@Model.Id"
+                   data-is-locked="@Model.IsLocked" data-is-approved="@Model.IsApproved">Отмена</a>
+            }
+            else
+            {
+                <a class="detail-a locked-r btn-success btn-calendar waves-effect
+           waves-light mr-1" data-id="@Model.Id">Отклонить</a>
+                <a class="detail-a-active approved-r active-but-v btn-success
+           btn-calendar waves-effect waves-light" data-id="@Model.Id">Одобрить</a>
+            }
+        }
+    </div>
+</div>
+<div class="selector-calendar"></div>

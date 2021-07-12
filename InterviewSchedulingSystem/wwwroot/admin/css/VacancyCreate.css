@@ -1,0 +1,38 @@
+﻿
+.cont {
+    padding-top: 160px !important;
+    padding-bottom: 0px !important;
+}
+.w-400 {
+    width: 400px;
+}
+.label-create-v{
+    font-size: 20px;
+}
+.block-center {
+    margin: 0 auto;
+    background: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.detail-a {
+    font-size: 18px;
+    color: white !important;
+    padding: 5px 8px;
+    border-radius: 5px;
+}
+@media screen and (max-width: 455px) {
+    .w-400 {
+        width: 98%;
+    }
+}
+@media screen and (max-width: 767px) {
+    .cont {
+        padding-top: 106px !important;
+    }
+    .container-fluid {
+        padding-right: 15px !important;
+        padding-left: 15px !important;
+    }
+}

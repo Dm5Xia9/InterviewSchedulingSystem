@@ -1,0 +1,11 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.VacanciesViewModels.VacancyBaseViewModel
+
+<div class="form-group">
+    <label asp-for="Name"></label><br />
+    <input class="form-control form-control-line" placeholder="Название" autocomplete="off" asp-for="Name">
+</div>
+<div class="form-group">
+    <label asp-for="CalendarId"></label><br />
+    <select class="form-control" asp-for="CalendarId" asp-items="Model.CalendarsSelectList">
+    </select>
+</div>

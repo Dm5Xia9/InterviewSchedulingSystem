@@ -1,0 +1,40 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CalendarsViewModels.Day
+@using InterviewSchedulingSystem.Extensions
+
+@if (Model.DayT.CompareTo(DateTime.Now) > 0)
+{
+    <div class="calendar-block unselectable">
+        <div class="day-week-text">@Model.DayT.GetDayNameOfWeek()</div>
+        <div class="number-day-week-text">
+        @($"{Model.DayT.Date.Day} {Model.DayT.Date.GetMonthName()}")</div>
+        @if (Model.Times != null)
+        {
+            <div class="free-time-block data-active" data-date="@Model.DayT.Date.ToString("yyyy-MM-dd")" 
+                 data-full-date="@Model.DayT.Date.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+
+                @foreach (var time in Model.Times)
+                {
+                    <div class="div-btn-calendar ">
+                        <button type="button" data-dateTime="@time.TimeD.ToLongTimeString()" 
+                                class="btn-calendar waves-effect waves-light but-time-calendar
+                                                btn-block-calendar btn-primary center-button" 
+                                style="z-index:999;">
+                            @time.TimeD.GetHourMinute()
+                        </button>
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="free-time-block" data-date="@Model.DayT.Date.ToString("yyyy-MM-dd")" 
+                 data-full-date="@Model.DayT.Date.ToString("yyyy-MM-ddTHH:mm:ssZ")">
+            </div>
+        }
+    </div>
+}
+
+
+
+

@@ -1,0 +1,164 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.RecordingsViewModels.IndexViewModel
+
+
+<ul class="nav nav-tabs customtab2" role="tablist">
+    <li class="nav-item"> 
+        <a class="nav-link active" data-toggle="tab" href="#home7" role="tab">
+            <span class="hidden-sm-up"><i class="ti-home"></i></span> 
+            <span class="hidden-xs-down">Без ответа</span>
+        </a> 
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" data-toggle="tab" href="#profile7" role="tab">
+            <span class="hidden-sm-up"><i class="ti-user"></i></span> 
+            <span class="hidden-xs-down">Одобренные</span>
+        </a> 
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" data-toggle="tab" href="#messages7" role="tab">
+            <span class="hidden-sm-up"><i class="ti-email"></i></span>
+            <span class="hidden-xs-down">Заблокированные</span>
+        </a> 
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" data-toggle="tab" href="#can" role="tab">
+            <span class="hidden-sm-up"><i class="ti-email"></i></span> 
+            <span class="hidden-xs-down">Отмененные</span>
+        </a> 
+    </li>
+</ul>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="home7" role="tabpanel">
+        &nbsp
+        <div class="list-vacandies">
+            @if (Model.IsNormalRecordings.Count() == 0)
+            {
+                <div>Тут пусто</div>
+            }
+            else
+            {
+                @foreach (var vacancy in Model.IsNormalRecordings)
+                {
+                    @await Html.PartialAsync("_IndexRecordingPartial.cshtml", vacancy);
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane" id="profile7" role="tabpanel">
+        &nbsp
+        <div class="list-vacandies">
+            @if (Model.IsApprovedRecordings.Count() == 0)
+            {
+                <div>Тут пусто</div>
+            }
+            else
+            {
+                @foreach (var vacancy in Model.IsApprovedRecordings)
+                {
+                    @await Html.PartialAsync("_IndexRecordingPartial.cshtml", vacancy);
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane" id="messages7" role="tabpanel">
+        &nbsp
+        <div class="list-vacandies">
+            @if (Model.IsLockedRecordings.Count() == 0)
+            {
+                <div>Тут пусто</div>
+            }
+            else
+            {
+                @foreach (var vacancy in Model.IsLockedRecordings)
+                {
+                    @await Html.PartialAsync("_IndexRecordingPartial.cshtml", vacancy);
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane" id="can" role="tabpanel">
+        &nbsp
+        <div class="list-vacandies">
+            @if (Model.IsСanceledRecordings.Count() == 0)
+            {
+                <div>Тут пусто</div>
+            }
+            else
+            {
+                @foreach (var vacancy in Model.IsСanceledRecordings)
+                {
+                    @await Html.PartialAsync("_IndexRecordingPartial.cshtml", vacancy);
+                }
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(".locked-r").click(function () {
+            var id_r = parseInt($(this).attr("data-id"));
+            $.ajax({
+                    url: "@Url.Action("Locked", "Recordings")",
+                    type: 'POST',
+                    data: { id: id_r, isLocked: true},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+            });
+        });
+    </script>
+    <script>
+        $(".approved-r").click(function () {
+            var id_r = parseInt($(this).attr("data-id"));
+            $.ajax({
+                    url: "@Url.Action("Approved", "Recordings")",
+                    type: 'POST',
+                    data: { id: id_r, isApproved: true},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+            });
+        });
+    </script>
+    <script>
+        $(".cancellation-r").click(function () {
+            var id_r = parseInt($(this).attr("data-id"));
+            if ($(this).attr("data-is-locked") == "True") {
+                $.ajax({
+                    url: "@Url.Action("Locked", "Recordings")",
+                    type: 'POST',
+                    data: { id: id_r, isLocked: false},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            }
+            else if ($(this).attr("data-is-approved") == "True") {
+                $.ajax({
+                    url: "@Url.Action("Approved", "Recordings")",
+                    type: 'POST',
+                    data: { id: id_r, isApproved: false},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            }
+        });
+    </script>
+}
+@section Styles{
+    <link href="~/admin/css/Recordings.css" rel="stylesheet" />
+}

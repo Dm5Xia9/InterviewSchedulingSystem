@@ -1,0 +1,51 @@
+﻿@model ISSystem.Models.Vacancy
+
+<div class="global-vacancy-block">
+    <div class="left-div-start-block" style="width: 400px;">
+        <div class="name-vacancy">@Model.Name</div>
+    </div>
+
+    @*<form>
+            <div class="form-group">
+                <select class="form-control" asp-for="VacancyId" asp-items="Model.Vacancies">
+                </select>
+            </div>
+        </form>*@
+<div class="flex-block">
+    <div class="left-div-start-block" style="width: 200px;">
+        @if (Model.Calendar != null)
+        {
+            <div class="name-vacancy">@Model.Calendar.Name</div>
+        }
+    </div>
+    &nbsp &nbsp &nbsp &nbsp &nbsp
+    <a asp-action="Edit" asp-controller="Vacancies" asp-route-id="@Model.Id"
+       class="edit-butt-a btn-success btn-calendar waves-effect waves-light">Изменить</a>
+    &nbsp
+    <a class="detail-a del-v btn-success btn-calendar waves-effect waves-light"
+       data-id="@Model.Id">Удалить</a>
+    &nbsp
+    @if (!Model.IsHidden)
+    {
+        <a class="detail-a hidd-but-v btn-success btn-calendar waves-effect waves-light"
+           data-id="@Model.Id">Скрыть</a>
+    }
+    else
+    {
+        <a class="detail-a-active hidd-but-v btn-success btn-calendar waves-effect waves-light"
+           data-id="@Model.Id">Открыть</a>
+    }
+    &nbsp
+    @if (Model.IsActive)
+    {
+        <a class="detail-a active-but-v btn-success btn-calendar waves-effect waves-light"
+           data-id="@Model.Id">Остановить</a>
+    }
+    else
+    {
+        <a class="detail-a-active active-but-v btn-success btn-calendar waves-effect waves-light"
+           data-id="@Model.Id">Запустить</a>
+    }
+</div>
+</div>
+<div class="selector-calendar"></div>

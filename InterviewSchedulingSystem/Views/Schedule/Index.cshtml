@@ -1,0 +1,335 @@
+﻿@model InterviewSchedulingSystem.ViewModels.ScheduleViewModels.IndexViewModel
+@using InterviewSchedulingSystem.Extensions
+
+@{
+    ViewData["Title"] = "Главная";
+}
+<div class="Candidate-info">
+    <div class="Title-Schedule">
+        @(Model.SelectedVacancy.Name)
+    </div>
+    @if (Model.Recording != null)
+    {
+        @if (!Model.Vacancy.IsActive && Model.Recording.IsApproved)
+        {
+<div class="Pod-Title-Schedule">
+    Вакансия @(Model.Vacancy.Name) остановлена, но ваша заявка принята! Ждем вас в
+    @($"{Model.CurrentDateTime.GetDayNameWhenOfWeek().ToLower()}" +
+                $" {Model.CurrentDateTime.Day} {Model.CurrentDateTime.GetMonthName().ToLower()} в" +
+                $" {Model.CurrentDateTime.GetHourMinute()}") по адресу Добролюбова 16, оф 611
+</div>
+        }
+        else if (Model.Recording.IsApproved)
+        {
+            <div class="Pod-Title-Schedule">
+                Ваша заявка на вакансию @(Model.Vacancy.Name) принятя. Ждем вас у нас в офисе, по адресу Добролюбова 16, оф 611 в
+                @($"{Model.CurrentDateTime.GetDayNameWhenOfWeek().ToLower()}" +
+                $" {Model.CurrentDateTime.Day} {Model.CurrentDateTime.GetMonthName().ToLower()} в" +
+                $" {Model.CurrentDateTime.GetHourMinute()}")
+            </div>
+            <div class="Pod-Title-Schedule">
+                Контактный телефон: +7 (343) 290-84-76
+            </div>
+        }
+        else if (!Model.Recording.IsApproved)
+        {
+            <div class="Pod-Title-Schedule">
+                Вы отправили запрос на собеседование по вакансии @(Model.Vacancy.Name) на
+                @($"{Model.CurrentDateTime.GetDayNameWhenOfWeek().ToLower()}" +
+                $" {Model.CurrentDateTime.Day} {Model.CurrentDateTime.GetMonthName().ToLower()} в" +
+                $" {Model.CurrentDateTime.GetHourMinute()}")
+            </div>
+        }
+        <div class="div-btn-calendar ">
+            <a class="del-record btn-calendar waves-light btn-block-calendar btn-primary" style="color:white; cursor:pointer">
+                Отменить запись
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="Pod-Title-Schedule">
+            @Model.Candidate.FullName, для записи на собеседование выберите удобную дату и время
+        </div>
+    }
+    <div style="display:flex;">
+        <div>
+            &nbsp
+        </div>
+        @*@foreach (var vac in Model.Vacancies)
+            {
+                if (vac.IsSelected)
+                {
+                    <div class="div-btn-calendar ">
+                        <a class="selecter-time btn-calendar waves-light
+                           btn-block-calendar btn-primary" href="@($"{Url.Action("Index", "Schedule")}/?idVacancy={vac.Vacancy.Id}")">
+                            @vac.Vacancy.Name
+                        </a>
+                    </div>
+                    <div>
+                        &nbsp
+                    </div>
+                }
+                else
+                {
+                    <div class="div-btn-calendar ">
+                        <a class=" btn-calendar waves-light
+                           btn-block-calendar btn-primary" href="@($"{Url.Action("Index", "Schedule")}/?idVacancy={vac.Vacancy.Id}")">
+                            @vac.Vacancy.Name
+                        </a>
+                    </div>
+                    <div>
+                        &nbsp
+                    </div>
+                }
+            }*@
+    </div>
+</div>
+<div id="carouselExampleControls" class="carousel slide" data-interval="false">
+    <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="calendars-block">
+                    @foreach (var item in Model.Schedules)
+                    {
+                        @await Html.PartialAsync("_DayBlockPartial.cshtml", item);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        if (Model.IsExistsPrevPages)
+        {
+            <a class="carousel-control-prev l--55" asp-controller="Schedule" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)"
+               role="button" data-slide="prev"> <span class="carousel-control-prev-icon carousel-control-prev-icon-black" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a>
+        }
+        if (Model.IsExistsNextPages)
+        {
+            <a class="carousel-control-next r--55" asp-controller="Schedule" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)"
+               role="button" data-slide="next"> <span class="carousel-control-next-icon carousel-control-next-icon-black" aria-hidden="true"></span> <span class="sr-only">Next</span> </a>
+        }
+    }
+    <div class="div-btn-calendar ">
+        <button class=" btn-calendar waves-light drugoe-vrema
+                   btn-block-calendar btn-primary center-button">
+            Нету подходящего времени
+        </button>
+    </div>
+</div>
+<div class="modals">
+    <div id="pupa" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="vcenter" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form method="post" asp-controller="Account" asp-action="Login" class="form-material w-400 block-center m-t-40">
+                        <div class="form-group row">
+                            <label for="example-datetime-local-input" class="col-2 col-form-label">Время</label>
+                            <div class="col-10">
+                                <input class="form-control new-date-time" style="border: 1px solid #ced4da !important; padding: 5px;" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control new-comment" style="border: 1px solid #ced4da !important; padding: 5px;" rows="5" placeholder="Комментарий"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect but-send" data-DateTime="" data-id-schedule="">Отправить</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div id="verticalcenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="vcenter" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title modal-add-title" id="vcenter"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>Записаться можно на одно время и одну вакансию. Если вы уже записаны, ваше время изменится.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect but-add-record" data-DateTime="" data-id-schedule="">Записаться</button>
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div id="info-record" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="vcenter" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                @*<div class="modal-header">
+                        <h4 class="modal-title" id="vcenter"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>*@
+                <div class="modal-body">
+                    @if (!Model.IsNewCandidate)
+                    {
+                        @if (!Model.Recording.IsApproved)
+                        {
+                            <h4>
+                                @(Model.Candidate.FullName), запрос на запись по вакансии @(Model.SelectedVacancy.Name) на
+                                @($"{Model.CurrentDateTime.GetDayNameOfWeek().ToLower()}" +
+                $" {Model.CurrentDateTime.Day} {Model.CurrentDateTime.GetMonthName().ToLower()} в" +
+                $" {Model.CurrentDateTime.GetHourMinute()}") был отправлен нашему менеджеру.
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4>
+                                @(Model.Candidate.FullName), вы записаны на собеседование по вакансии @(Model.SelectedVacancy.Name) на
+                                @($"{Model.CurrentDateTime.GetDayNameOfWeek().ToLower()}" +
+                $" {Model.CurrentDateTime.Day} {Model.CurrentDateTime.GetMonthName().ToLower()} в" +
+                $" {Model.CurrentDateTime.GetHourMinute()}")
+                            </h4>
+                        }
+
+                    }
+                    <button type="button" class="btn btn-info waves-effect del-record" style="
+                    left: 12%;
+                    font-size: 14px;
+                    padding: 3px 13px;" data-DateTime="" data-id-schedule="">
+                        Отменить запись или записаться на другое время
+                    </button>
+                    <div class="info-addres-record">
+                        <h5></h5>
+                        <h5>Ждем вас у нас в офисе, по адресу Добролюбова 16, оф 611</h5>
+                        <h5>Вход в офисное здание со стороны улицы Радищева</h5>
+                        <h5>Телефон +7 (343) 290-84-76</h5>
+                    </div>
+                    <div id="wrapper-9cd199b9cc5410cd3b1ad21cab2e54d3">
+                        <div id="map-9cd199b9cc5410cd3b1ad21cab2e54d3"></div>
+                        <script>
+                            (function () {
+                                var setting = { "height": 220, "width": 564, "zoom": 18, "queryString": "улица Добролюбова, 16, Екатеринбург, Россия", "place_id": "ChIJJUGsLI1uwUMRwW06RWgxJqU", "satellite": false, "centerCoord": [56.831297561687705, 60.60356061745912], "cid": "0xa5263168453a6dc1", "lang": "ru", "cityUrl": "/russia/ekaterinburg", "cityAnchorText": "Карта [CITY1], Урал - Сибирь - Дальний Восток, Россия", "id": "map-9cd199b9cc5410cd3b1ad21cab2e54d3", "embed_id": "516319" };
+                                var d = document;
+                                var s = d.createElement('script');
+                                s.src = 'https://1map.com/js/script-for-user.js?embed_id=516319';
+                                s.async = true;
+                                s.onload = function (e) {
+                                    window.OneMap.initMap(setting)
+                                };
+                                var to = d.getElementsByTagName('script')[0];
+                                to.parentNode.insertBefore(s, to);
+                            })();</script><a href="https://1map.com/ru/map-embed">1 Map</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(".but-send").click(function () {
+            $.ajax({
+                url: "@Url.Action("SentNewTime", "Schedule")",
+                type: 'POST',
+                data: { newDateTime: $(".new-date-time").val(), comment: $(".new-comment").val() },
+                success: function (response) {
+                    location.href = response;
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+        });
+    </script>
+    <script>
+        $(".drugoe-vrema").click(function () {
+            $('#pupa').modal('show');
+        });
+    </script>
+<script>
+    $(".strollBottomButt").mousedown(function () {
+        var fr = $(this).attr("data-id-scroll");
+        var gig = $(".free-time-block[data-id-scroll='" + fr +"']");
+        console.log(gig);
+        $(gig).animate({
+            scrollTop: gig.scrollTop() + 36
+        }, 200
+        );
+    });
+</script>
+    <script>
+        $(".del-record").click(function () {
+            var dateTime = $(this).attr("data-DateTime");
+            var id = $(this).attr("data-id-schedule");
+            $.ajax({
+                url: "@Url.Action("DeleteRecordingTime", "Schedule")",
+                type: 'POST',
+                data: { idSchedule: parseInt(id), selectDataTime: dateTime},
+                success: function (response) {
+                    location.href = response;
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+        })
+    </script>
+    <script>
+        $(".but-clicker").click(function () {
+            $(".modal-add-title").text("Записаться на " + $(this).text());
+            $(".but-add-record").attr("data-DateTime", $(this).attr("data-DateTime"));
+            $(".but-add-record").attr("data-id-schedule", $(this).attr("data-id-schedule"));
+            $('#verticalcenter').modal('show');
+        })
+    </script>
+    <script>
+        $(".but-add-record").click(function () {
+            var dateTime = $(this).attr("data-DateTime");
+            var id = $(this).attr("data-id-schedule");
+            $.ajax({
+                url: "@Url.Action("ChangeRecordingTime", "Schedule")",
+                type: 'POST',
+                data: { idSchedule: parseInt(id), selectDataTime: dateTime, idVacancy:@(Model.SelectedVacancy.Id)},
+                success: function (response) {
+                    location.href = response;
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+        });
+    </script>
+    <script>
+        $(".selecter-time").click(function () {
+            $(".del-record").attr("data-DateTime", $(this).attr("data-DateTime"));
+            $(".del-record").attr("data-id-schedule", $(this).attr("data-id-schedule"));
+            $('#info-record').modal('show');
+        });
+    </script>
+    @if (!Model.Candidate.IsNotified)
+    {
+<script>
+    $(document).ready(function () {
+        $(".del-record").attr("data-DateTime", $(".selecter-time").attr("data-DateTime"));
+        $(".del-record").attr("data-id-schedule", $(".selecter-time").attr("data-id-schedule"));
+                $('#info-record').modal('show');
+                $.ajax({
+                    url: "@Url.Action("СhangeNotified", "Schedule")",
+                    type: 'POST',
+                    data: {},
+                    success: function (response) {
+
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            });
+</script>
+    }
+}

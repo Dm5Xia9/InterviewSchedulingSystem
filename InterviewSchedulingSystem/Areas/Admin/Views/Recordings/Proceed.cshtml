@@ -1,0 +1,27 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.RecordingsViewModels.ProceedViewModel
+
+<div class="head-calendars" style="display:flex; justify-content: flex-end;">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light" style="padding:5px;"
+       asp-action="Index" asp-controller="Recordings">Назад</a>
+</div>
+<form class="form-material w-400 block-center" method="post" asp-controller="Recordings" asp-action="Proceed">
+    <input asp-for="RecordingId" hidden="hidden" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <label class="label-create-v">Продолжение собеседования</label>
+    <div class="form-group">
+        <label asp-for="VacancyId"></label><br />
+        <select class="form-control" asp-for="VacancyId" asp-items="Model.Vacancies">
+        </select>
+    </div>
+
+    <p>
+        <center><button type="submit" class="detail-a btn-success btn-calendar waves-effect waves-light">Сохранить</button></center>
+    </p>
+</form>
+@section Styles{
+    <link href="~/admin/css/VacancyCreate.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/js/mask.init.js"></script>
+    <script src="~/lib/horizontal-timeline/js/horizontal-timeline.js"></script>
+}

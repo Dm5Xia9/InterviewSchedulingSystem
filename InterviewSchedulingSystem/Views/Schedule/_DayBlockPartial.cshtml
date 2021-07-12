@@ -1,0 +1,47 @@
+﻿@model ISSystem.Models.Schedule
+
+@using InterviewSchedulingSystem.Extensions
+
+@{
+    //string lastClass = "";
+    //if (j == Model.Schedules.Count - 1)
+    //{
+    //    lastClass = "last";
+    //}
+
+}
+
+<div class="calendar-block unselectable">
+    <div class="day-week-text">@Model.Date.GetDayNameOfWeek()</div>
+    <div class="number-day-week-text">@($"{Model.Date.Day} {Model.Date.GetMonthName()}")</div>
+    <div class="free-time-block" data-id-scroll="@Model.Id">
+        @foreach (var itemTime in Model.TimeSchedule.Times)
+        {
+            if (itemTime.Time == ViewBag.CurrentDateTime && ViewBag.SelectIdVacancy == ViewBag.IdVacancy)
+            {
+                <div class="div-btn-calendar ">
+                    <button type="button" class="selecter-time btn-calendar waves-effect waves-light
+                                                btn-block-calendar btn-primary center-button"
+                            data-DateTime="@itemTime.Time" data-id-schedule="@Model.Id">
+                        @itemTime.Time.GetHourMinute()
+                    </button>
+                </div>
+            }
+            if (itemTime.IsAvailable)
+            {
+                <div class="div-btn-calendar ">
+                    <button type="button" class="btn-calendar waves-effect waves-light but-clicker
+                                                btn-block-calendar btn-primary center-button"
+                            data-DateTime="@itemTime.Time" data-id-schedule="@Model.Id"
+                            data-toggle="modal" data-target="#verticalcenter">
+                        @itemTime.Time.GetHourMinute()
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    @if (Model.TimeSchedule.Times.Count() > 11)
+    {
+        <div class="strollBottomButt" data-id-scroll="@Model.Id" style="text-align: center;font-weight: bold; width:100%; cursor: pointer;"><i class="mdi mdi-arrow-down-bold"></i></div>
+    }
+</div>

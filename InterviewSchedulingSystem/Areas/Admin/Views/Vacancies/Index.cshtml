@@ -1,0 +1,144 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.VacanciesViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+<div class="head-calendars">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light" asp-action="Create"
+       asp-controller="Vacancies">Создать</a>
+</div>
+
+<ul class="nav nav-tabs customtab2" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home7" role="tab">
+            <span class="hidden-sm-up"><i class="ti-home"></i></span>
+            <span class="hidden-xs-down">Видимые</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#profile7" role="tab">
+            <span class="hidden-sm-up"><i class="ti-user"></i></span>
+            <span class="hidden-xs-down">Скрытые</span>
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="home7" role="tabpanel">
+        &nbsp
+        <div class="list-vacandies">
+            @if (Model.NormalVacancies.Count() == 0)
+            {
+                <div>Тут пусто</div>
+            }
+            else
+            {
+                @foreach (var vacancy in Model.NormalVacancies)
+                {
+                    @await Html.PartialAsync("_IndexVacancyPartial.cshtml", vacancy);
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane" id="profile7" role="tabpanel">
+        &nbsp
+        <div class="list-vacandies">
+            @if (Model.HiddenVacancies.Count() == 0)
+            {
+                <div>Тут пусто</div>
+            }
+            else
+            {
+                @foreach (var vacancy in Model.HiddenVacancies)
+                {
+                    @await Html.PartialAsync("_IndexVacancyPartial.cshtml", vacancy);
+                }
+            }
+        </div>
+    </div>
+</div>
+@*<div class="list-vacandies">
+    @if (Model.Vacancies.Count() == 0)
+    {
+        <div>Тут пусто</div>
+    }
+    else
+    {
+        @foreach (var vacancy in Model.Vacancies)
+        {
+            @await Html.PartialAsync("_IndexVacancyPartial.cshtml", vacancy);
+        }
+    }
+</div>*@
+<div id="verticalcenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="vcenter" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-add-title" id="vcenter"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Вакансию невозможно удалить из-за активных записей на нее</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@section Styles{
+    <link href="~/admin/css/Vacancies.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script>
+        $(".del-v").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Delete", "Vacancies")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                success: function (response) {
+                    if (response == "err") {
+                        $('#verticalcenter').modal('show');
+                    }
+                    else {
+                        location.href = response;
+                    }
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                    });
+        });
+    </script>
+    <script>
+        $(".active-but-v").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Active", "Vacancies")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                    });
+        });
+    </script>
+    <script>
+        $(".hidd-but-v").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Hidden", "Vacancies")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                    });
+        });
+    </script>
+}

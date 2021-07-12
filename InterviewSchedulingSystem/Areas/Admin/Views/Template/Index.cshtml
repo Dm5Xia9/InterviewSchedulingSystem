@@ -1,0 +1,57 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.TemplateViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+@using InterviewSchedulingSystem.Extensions
+
+<div class="head-calendars">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light"
+       asp-action="Create" asp-controller="Template">Создать</a>
+</div>
+<div class="list-calendars">
+    @if (Model.Templates.Count() == 0)
+    {
+        <div>тут пусто</div>
+    }
+    else
+    {
+        @foreach (var calendar in Model.Templates)
+        {
+            <div class="global-calandar-block">
+                <div class="start-div-calendar-block">
+                    <div class="left-div-start-block">
+                        <div class="name-calendar" style="width: 300px;">@calendar.Name</div>
+                    </div>
+                    <div class="right-div-start-block" style="align-items:center;">
+                        <a asp-action="Update" asp-controller="Template" asp-route-id="@calendar.Id"
+                           class="detail-a btn-success btn-calendar waves-effect waves-light">Подробнее</a>
+                        &nbsp
+                        <a class="detail-a detail-aa del-c btn-success btn-calendar waves-effect waves-light"
+                           data-id="@calendar.Id">Удалить</a>
+                    </div>
+                </div>
+            </div>
+            <div class="selector-calendar"></div>
+        }
+    }
+</div>
+@section Styles{
+    <link href="~/admin/css/Calendars.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script>
+        $(".del-c").click(function () {
+            $.ajax({
+                    url: "@Url.Action("Delete", "Template")",
+                    type: 'POST',
+                    data: { id: parseInt($(this).attr("data-id"))},
+                    success: function (response) {
+                        location.href = response;
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                    });
+        });
+    </script>
+}

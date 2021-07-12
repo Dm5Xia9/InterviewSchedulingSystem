@@ -1,0 +1,80 @@
+﻿.cont {
+    padding-top: 130px !important;
+    padding-bottom: 0px !important;
+}
+
+.global-vacancy-block {
+    background: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: space-between;
+}
+
+.name-vacancy {
+    font-size: 18px;
+    padding: 3px 0px;
+}
+
+.right-div-start-block {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.detail-a {
+    font-size: 18px;
+    color: white !important;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: #bb7777 !important;
+    border-color: #bb7777 !important;
+}
+
+.detail-a-active {
+    font-size: 18px;
+    color: white !important;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: green !important;
+    border-color: green !important;
+}
+
+.head-calendars {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 14px;
+}
+
+.create-butt-a {
+    font-size: 20px;
+    padding: 4px 11px;
+    border-radius: 5px;
+}
+
+.selector-calendar {
+    height: 14px;
+}
+
+.flex-block {
+    display: flex;
+    align-items: center;
+}
+
+.edit-butt-a {
+    font-size: 20px;
+    padding: 4px 11px;
+    border-radius: 5px;
+}
+.telephone-vacancy {
+    font-size: 16px;
+    align-items: center;
+    padding: 10px 0px;
+}
+@media screen and (max-width: 767px) {
+    .cont {
+        padding-top: 76px !important;
+    }
+}

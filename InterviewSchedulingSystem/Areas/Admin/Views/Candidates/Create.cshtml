@@ -1,0 +1,39 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CandidatesViewModels.CreateViewModel
+<div class="head-calendars" style="display:flex; justify-content: flex-end;">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light"
+       style="padding:5px;" asp-action="Index" asp-controller="Candidates">Назад</a>
+</div>
+<form class="form-material w-400 block-center" method="post" asp-controller="Candidates" asp-action="Create">
+    <div asp-validation-summary="ModelOnly"></div>
+    <label class="label-create-v">Создание кандидата</label>
+    <div class="form-group">
+        <input class="form-control form-control-line" placeholder="Полное имя" autocomplete="off" asp-for="FullName">
+    </div>
+    <div class="form-group row">
+        <div class="col-10">
+            <input type="text" class="form-control phone-inputmask" id="phone-mask" placeholder="Номер телефона" asp-for="Telephone">
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="VacancyId"></label><br />
+        <select class="form-control" asp-for="VacancyId" asp-items="Model.Vacancies">
+        </select>
+    </div>
+    <div class="form-group">
+        <input id="click-autoLink" readonly class="form-control form-control-line"
+               onfocus="this.select()" placeholder="Ссылка" autocomplete="off" asp-for="FullLink">
+    </div>
+    <div class="form-group" style="display:none;">
+        <input class="form-control form-control-line" placeholder="Полное имя" autocomplete="off" asp-for="Link">
+    </div>
+    <p>
+        <center><button type="submit" class="detail-a btn-success btn-calendar waves-effect waves-light">Создать</button></center>
+    </p>
+</form>
+@section Styles{
+    <link href="~/admin/css/VacancyCreate.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/js/mask.init.js"></script>
+    <script src="~/lib/horizontal-timeline/js/horizontal-timeline.js"></script>
+}

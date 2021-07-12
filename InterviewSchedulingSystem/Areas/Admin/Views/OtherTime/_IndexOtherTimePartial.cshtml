@@ -1,0 +1,37 @@
+﻿@model ISSystem.Models.Recording
+@using InterviewSchedulingSystem.Extensions
+<div>
+    <div class="global-vacancy-block">
+        <div class="left-div-start-block">
+            <div class="name-vacancy">@Model.Candidate.FullName</div>
+        </div>
+        <div class="left-div-start-block">
+            <div class="telephone-vacancy">@Model.Vacancy.Name</div>
+        </div>
+        <div class="left-div-start-block" style="width: 100px;">
+            <div class="telephone-vacancy">@Model.DateTime.GetDayNameOfWeek()</div>
+        </div>
+        <div class="left-div-start-block">
+            <div class="telephone-vacancy">
+                @($"{Model.DateTime.Day} {Model.DateTime.GetMonthName()} " +
+                $"в {Model.DateTime.GetHourMinute()}")
+            </div>
+        </div>
+        <div class="left-div-start-block">
+            <div class="telephone-vacancy">@Model.Candidate.Telephone</div>
+        </div>
+        <div class="flex-block">
+            &nbsp
+            <a class="edit-butt-a appr-recording btn-success btn-calendar waves-effect waves-light" style="color: white;"
+               data-id="@Model.Id">Принять</a>
+            &nbsp
+            <a class="lock-recording detail-a del-v btn-success btn-calendar waves-effect waves-light"
+               data-id="@Model.Id">Заблокировать</a>
+            &nbsp
+        </div>
+    </div>
+    <div class="global-vacancy-block" style="border-radius: 0px;">
+        @(Model.Comment)
+    </div>
+</div>
+<div class="selector-calendar"></div>

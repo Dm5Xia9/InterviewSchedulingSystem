@@ -1,0 +1,30 @@
+﻿@model ISSystem.Models.Calendar
+
+@using InterviewSchedulingSystem.Extensions
+
+<div class="global-calandar-block">
+    <div class="start-div-calendar-block">
+        <div class="left-div-start-block">
+            <div class="name-calendar" style="width: 300px;">@Model.Name</div>
+        </div>
+        <div class="right-div-start-block" style="align-items:center;">
+            <div class="err-block">
+                @Model.Schedules.SchedulesError()
+            </div>
+            <a asp-action="EditTemp" asp-controller="Calendars" asp-route-id="@Model.Id"
+               class="detail-a btn-success btn-calendar waves-effect waves-light">Редактор шаблона</a>
+            &nbsp
+            <a asp-action="Update" asp-controller="Calendars" asp-route-id="@Model.Id"
+               class="detail-a btn-success btn-calendar waves-effect waves-light">Подробнее</a>
+            &nbsp
+            <a class="detail-a detail-aa del-c btn-success btn-calendar waves-effect waves-light"
+               data-id="@Model.Id">Удалить</a>
+        </div>
+    </div>
+    <div class="end-div-calendar-block">
+        <div class="limitation-end-block">
+            @Model.Schedules.ListToString()
+        </div>
+    </div>
+</div>
+<div class="selector-calendar"></div>

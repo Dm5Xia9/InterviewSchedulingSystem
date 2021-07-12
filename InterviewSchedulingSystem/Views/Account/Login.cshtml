@@ -1,0 +1,26 @@
+﻿@model InterviewSchedulingSystem.ViewModels.AccountViewModels.LoginViewModel
+
+<form method="post" asp-controller="Account" asp-action="Login" class="form-material w-400 block-center m-t-40"
+      asp-route-returnUrl="@Model.ReturnUrl">
+    <div asp-validation-summary="ModelOnly"></div>
+    <h2>Вход</h2>
+    <div class="form-group">
+        <input class="form-control form-control-line" placeholder="Почта" asp-for="Email">
+    </div>
+    <div class="form-group">
+        <input class="form-control form-control-line" placeholder="Пароль" asp-for="Password">
+    </div>
+    <div class="form-group">
+        <input class="form-control form-control-line" placeholder="Еще пароль" asp-for="RememberMe">
+    </div>
+    <p>
+        <center><button type="submit" class="detail-a btn-success btn-calendar waves-effect waves-light">Войти</button></center>
+    </p>
+</form>
+@section Styles{
+    <link href="~/admin/css/VacancyCreate.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/js/mask.init.js"></script>
+    <script src="~/lib/horizontal-timeline/js/horizontal-timeline.js"></script>
+}

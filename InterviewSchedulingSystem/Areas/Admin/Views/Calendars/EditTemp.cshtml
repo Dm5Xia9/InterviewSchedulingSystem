@@ -1,0 +1,30 @@
+﻿@model InterviewSchedulingSystem.Areas.Admin.ViewModels.CalendarsViewModels.EditTempViewModel
+
+<div class="head-calendars" style="display:flex; justify-content: flex-end;">
+    <a class="create-butt-a btn-success btn-calendar waves-effect waves-light" style="padding:5px;"
+       asp-action="Index" asp-controller="Calendars">Назад</a>
+</div>
+<form class="form-material w-400 block-center" method="post" asp-controller="Calendars" asp-action="EditTemp">
+    <input asp-for="Id" hidden="hidden" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <label class="label-create-v">Редатор шаблона</label>
+    <div class="form-group">
+        <label asp-for="TemplateId"></label><br />
+        <select class="form-control" asp-for="TemplateId" asp-items="Model.SelectTemplates">
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberOfWeeks"></label><br />
+        <input class="form-control form-control-line" placeholder="Количество недель для авто-заполнения" autocomplete="off" asp-for="NumberOfWeeks">
+    </div>
+    <div class="form-group">
+        <input type="checkbox" class="filled-in chk-col-purple" asp-for="IsOverwrite">
+        <label for="IsOverwrite">Перезаписать календарь</label>
+    </div>
+    <p>
+        <center><button type="submit" class="detail-a btn-success btn-calendar waves-effect waves-light">Изменить</button></center>
+    </p>
+</form>
+@section Styles{
+    <link href="~/admin/css/VacancyCreate.css" rel="stylesheet" />
+}
